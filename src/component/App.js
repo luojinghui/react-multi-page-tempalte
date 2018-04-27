@@ -15,10 +15,10 @@ class App extends Component {
   }
 
   onClickContent = async () => {
-    let module = await import('../tools/');
+    let {add} = await import('../tools/');
 
     this.setState({
-      value: module.add(this.state.a, this.state.b)
+      value: add(this.state.a, this.state.b)
     })
   };
 
@@ -28,20 +28,16 @@ class App extends Component {
         <div className="App">
           <header className={styles.App_header}>
             <img src={logo} className={styles.App_logo} alt="logo" />
-            <h1 className={styles.App_title}>Welcome to React</h1>
           </header>
-        </div>
-        <div onClick={this.onClickContent}>
-          <Content />
           <h1>
             {
               `${this.state.a} + ${this.state.b} = ${this.state.value}`
             }
           </h1>
         </div>
-        <p className={styles.App_intro}>
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div onClick={this.onClickContent}>
+          <Content />
+        </div>
       </div>
     );
   }
