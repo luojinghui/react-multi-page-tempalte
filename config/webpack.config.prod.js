@@ -13,6 +13,18 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const config = require('./config');
+const miniHtmlPluginConfig = {
+  removeComments: true,
+  collapseWhitespace: true,
+  removeRedundantAttributes: true,
+  useShortDoctype: true,
+  removeEmptyAttributes: true,
+  removeStyleLinkTypeAttributes: true,
+  keepClosingSlash: true,
+  minifyJS: true,
+  minifyCSS: true,
+  minifyURLs: true,
+};
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -44,21 +56,42 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
+  {publicPath: Array(cssFilename.split('/').length).join('../')}
   : {};
 
 const initEntry = () => {
-    let entry = config.entry;
+  let entry = config.entry;
+  let obj = {};
 
-    for (let key in entry) {
-        entry[key].push(require.resolve('react-dev-utils/webpackHotDevClient'),
-          require.resolve('./polyfills'),
-          require.resolve('react-error-overlay')
-        );
-    }
+  entry.forEach((val) => {
+    obj[val.name] = [
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      require.resolve('./polyfills'),
+      require.resolve('react-error-overlay'),
+      val.entryJs
+    ]
+  });
 
-  return entry
+  return obj
 };
+
+let data = [
+  new HtmlWebpackPlugin({
+    inject: true,
+    chunks: ["index"],
+    template: paths.appHtml,
+    title: "index",
+    content: "index111"
+  }),
+  new HtmlWebpackPlugin({
+    inject: true,
+    chunks: ["main"],
+    template: paths.appHtml,
+    filename: 'main.html',
+    title: "main",
+    content: "main3333"
+  })
+];
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -109,7 +142,7 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -140,7 +173,7 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
+
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -168,7 +201,7 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
+
               compact: true,
             },
           },
@@ -252,6 +285,15 @@ module.exports = {
       },
     ],
   },
+
+  // 不需要打包的模块
+  externals: {
+    "jquery": "jQuery",
+    "$": "jQuery",
+    "lang": "window.lang",
+    "moment": "moment"
+  },
+
   plugins: [
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
@@ -261,31 +303,13 @@ module.exports = {
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
 
-
-
-    // new HtmlWebpackPlugin({
-    //   inject: true,
-    //   template: paths.appHtml,
-    //   minify: {
-    //     removeComments: true,
-    //     collapseWhitespace: true,
-    //     removeRedundantAttributes: true,
-    //     useShortDoctype: true,
-    //     removeEmptyAttributes: true,
-    //     removeStyleLinkTypeAttributes: true,
-    //     keepClosingSlash: true,
-    //     minifyJS: true,
-    //     minifyCSS: true,
-    //     minifyURLs: true,
-    //   },
-    // }),
-
     new HtmlWebpackPlugin({
       inject: true,
       chunks: ["index"],
       template: paths.appHtml,
       title: "index",
-      content: "index111"
+      content: "index111",
+      minify: miniHtmlPluginConfig
     }),
     new HtmlWebpackPlugin({
       inject: true,
@@ -293,11 +317,9 @@ module.exports = {
       template: paths.appHtml,
       filename: 'main.html',
       title: "main",
-      content: "main3333"
+      content: "main3333",
+      minify: miniHtmlPluginConfig
     }),
-
-
-
 
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
@@ -382,3 +404,54 @@ module.exports = {
     child_process: 'empty',
   },
 };
+
+// (function () {
+//   let entry = config.entry;
+//
+//   entry.map(function(val) {
+//     webpackConfig.plugins.push(
+//       new HtmlWebpackPlugin({
+//         inject: true,
+//         chunks: [val.name],
+//         template: val.template,
+//         title: val.name,
+//         content: val.content,
+//         // minify: {
+//         //   removeComments: true,
+//         //   collapseWhitespace: true,
+//         //   removeRedundantAttributes: true,
+//         //   useShortDoctype: true,
+//         //   removeEmptyAttributes: true,
+//         //   removeStyleLinkTypeAttributes: true,
+//         //   keepClosingSlash: true,
+//         //   minifyJS: true,
+//         //   minifyCSS: true,
+//         //   minifyURLs: true,
+//         // },
+//       })
+//     )
+//   })
+//
+//   // module.exports.plugins.push(
+//   //   new HtmlWebpackPlugin({
+//   //     inject: true,
+//   //     chunks: ["index"],
+//   //     template: paths.appHtml,
+//   //     title: "index",
+//   //     content: "index111"
+//   //   }),
+//   // );
+//   //
+//   // module.exports.plugins.push(
+//   //   new HtmlWebpackPlugin({
+//   //     inject: true,
+//   //     chunks: ["main"],
+//   //     template: paths.appHtml,
+//   //     filename: 'main.html',
+//   //     title: "main",
+//   //     content: "main3333"
+//   //   }),
+//   // )
+// })();
+//
+

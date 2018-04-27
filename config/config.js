@@ -6,12 +6,20 @@
 const paths = require('./paths');
 
 module.exports = {
-  entry: {
-    'index': [
-      paths.appIndexJs,
-    ],
-    'main': [
-      paths.appSrc + "/entry/main.js",
-    ]
-  }
+  entry: [
+    {
+      'name': "index",
+      'entryJs': paths.appSrc + "/entry/index.js",
+      'title': "首页",
+      'template': paths.appHtml,
+      'content': '这个是首页'
+    },
+    {
+      'name': "main",
+      'entryJs': paths.appSrc + "/entry/main.js",
+      'title': "Main's Page",
+      'template': paths.appHtml,
+      'content': '这个是Main'
+    }
+  ]
 };

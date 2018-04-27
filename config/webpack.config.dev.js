@@ -22,17 +22,21 @@ const publicPath = '/';
 const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
+
 const initEntry = () => {
   let entry = config.entry;
+  let obj = {};
 
-  for (let key in entry) {
-    entry[key].push(require.resolve('react-dev-utils/webpackHotDevClient'),
+  entry.forEach((val) => {
+    obj[val.name] = [
+      require.resolve('react-dev-utils/webpackHotDevClient'),
       require.resolve('./polyfills'),
-      require.resolve('react-error-overlay')
-    );
-  }
+      require.resolve('react-error-overlay'),
+      val.entryJs
+    ]
+  });
 
-  return entry
+  return obj
 };
 
 // This is the development configuration.
@@ -57,7 +61,7 @@ module.exports = {
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
-    filename: 'static/js/bundle.js',
+    filename: 'static/js/[name].bundle.js',
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
     // This is the URL that app is served from. We use "/" in development.
@@ -209,6 +213,15 @@ module.exports = {
       // Make sure to add the new loader(s) before the "file" loader.
     ],
   },
+
+  // 不需要打包的模块
+  externals: {
+    "jquery": "jQuery",
+    "$": "jQuery",
+    "lang": "window.lang",
+    "moment": "moment"
+  },
+
   plugins: [
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
@@ -216,10 +229,30 @@ module.exports = {
     // In development, this will be an empty string.
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
+
+
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   template: paths.appHtml,
+    // }),
+
     new HtmlWebpackPlugin({
       inject: true,
+      chunks: ["index"],
       template: paths.appHtml,
+      title: "index",
+      content: "index111"
     }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: ["main"],
+      template: paths.appHtml,
+      filename: 'main.html',
+      title: "main",
+      content: "main3333"
+    }),
+
+
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
     // Makes some environment variables available to the JS code, for example:
