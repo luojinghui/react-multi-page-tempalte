@@ -1,28 +1,37 @@
-.App {
-  text-align: center;
+@import './index.scss';
+
+$color: #ddd;
+
+body {
+  background-color: $color;
 }
 
-.App-logo {
+:global .App {
+  text-align: center;
+  background-color: $color;
+}
+
+.App_logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
-.App-header {
+.App_header {
   background-color: #222;
   height: 150px;
   padding: 20px;
   color: white;
 }
 
-.App-title {
+.App_title {
   font-size: 1.5em;
 }
 
-.App-intro {
+.App_intro {
   font-size: large;
 }
 
-@keyframes App-logo-spin {
+@keyframes App_logo_spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }

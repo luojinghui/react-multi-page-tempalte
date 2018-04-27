@@ -58,6 +58,10 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
   {publicPath: Array(cssFilename.split('/').length).join('../')}
   : {};
+const extractSass = new ExtractTextPlugin({
+  filename: "static/css/[name].[contenthash].css",
+  disable: process.env.NODE_ENV === "development"
+});
 
 const initEntry = () => {
   let entry = config.entry;
@@ -262,7 +266,44 @@ module.exports = {
                 extractTextPluginOptions
               )
             ),
+
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+          },
+
+          {
+            test: /\.(scss|sass)$/,
+            use: extractSass.extract({
+              use: [
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    importLoaders: 2,
+                    modules: true,
+                    localIdentName: '[local]--[hash:base64:5]'
+                  },
+                },
+                {
+                  loader: "postcss-loader",
+                  options: {
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-flexbugs-fixes'),
+                      autoprefixer({
+                        browsers: [
+                          '>1%',
+                          'last 4 versions',
+                          'Firefox ESR',
+                          'not ie < 9', // React doesn't support IE8 anyway
+                        ],
+                        flexbox: 'no-2009',
+                      }),
+                    ],
+                  }
+                },
+                {loader: "sass-loader"}
+              ],
+              fallback: "style-loader"
+            }),
           },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
@@ -351,6 +392,8 @@ module.exports = {
     new ExtractTextPlugin({
       filename: cssFilename,
     }),
+
+    extractSass,
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
