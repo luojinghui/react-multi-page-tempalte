@@ -1,6 +1,7 @@
 @import './index.scss';
 
 $color: #ddd;
+$whiteColor: #fff;
 
 body {
   background-color: $color;
@@ -8,7 +9,7 @@ body {
 
 :global .App {
   text-align: center;
-  background-color: $color;
+  background-color: $whiteColor;
 }
 
 .App_logo {
@@ -33,4 +34,16 @@ body {
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+#tab-bar.demo {
+  display: flex;
+  flex-direction: column;
+}
+#tab-bar .demoName {
+  height: 40px;
+}
+#tab-bar .demo-preview-item .am-tab-bar {
+  background-color: white;
 }

@@ -14,7 +14,7 @@ body {
 
 :global .App {
   text-align: center;
-  background-color: #ddd; }
+  background-color: #fff; }
 
 .App_logo {
   animation: App-logo-spin infinite 20s linear;
@@ -36,3 +36,13 @@ body {
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
+
+#tab-bar.demo {
+  display: flex;
+  flex-direction: column; }
+
+#tab-bar .demoName {
+  height: 40px; }
+
+#tab-bar .demo-preview-item .am-tab-bar {
+  background-color: white; }

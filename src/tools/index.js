@@ -3,7 +3,7 @@
  * @date 2018/4/27
  * @Description:
  */
-import React, { Component } from 'react';
+import React from 'react';
 
 const add = (a, b) => {
   return a + b;
