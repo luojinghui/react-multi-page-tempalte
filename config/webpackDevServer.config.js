@@ -79,6 +79,9 @@ module.exports = function(proxy, allowedHost) {
       // See https://github.com/facebookincubator/create-react-app/issues/387.
       rewrites: [
         { from: /^\/main.html/, to: '/build/main.html' },
+        { from: /^\/meetingControl.html/, to: '/build/meetingControl.html' },
+        { from: /^\/meetingOtherControl.html/, to: '/build/meetingOtherControl.html' },
+        { from: /^\/meetingPassword.html/, to: '/build/meetingPassword.html' },
       ]
     },
     public: allowedHost,

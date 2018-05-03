@@ -1,0 +1,16 @@
+:global body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; }
+
+#app {
+  color: dodgerblue;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center; }
+
+.am_list_header {
+  padding-top: 15px; }
+
+.main {
+  background-color: #2F7DCD; }

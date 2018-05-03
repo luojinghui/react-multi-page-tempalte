@@ -1,11 +1,5 @@
-@import './index.scss';
-
-$color: #ddd;
-$whiteColor: #fff;
-
-body {
-  background-color: $color;
-}
+@import 'common.scss';
+@import './var.scss';
 
 :global .App {
   text-align: center;

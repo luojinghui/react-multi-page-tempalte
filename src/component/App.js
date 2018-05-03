@@ -28,42 +28,34 @@ class App extends Component {
     });
   };
 
+  onJumpPage() {
+    window.location.href = window.location.protocol + "meetingControl.html";
+  }
+
   renderContent(pageText) {
     let { selectedTab } = this.state;
 
     if (selectedTab === "blueTab") {
       return (
-        <List className="my-list">
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item
-            arrow="horizontal"
-            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-            multipleLine
-            onClick={() => {}}
-          >
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
-            Title <Brief>subtitle</Brief>
-          </Item>
-        </List>
+        <div
+          style={{
+            backgroundColor: "white",
+            height: "100%",
+            textAlign: "center"
+          }}
+        >
+          <List className="my-list">
+            <Item arrow="horizontal" multipleLine onClick={this.onJumpPage.bind(this)}>
+              Title <Brief>subtitle</Brief>
+            </Item>
+            <Item arrow="horizontal" multipleLine onClick={() => {}}>
+              Title <Brief>subtitle</Brief>
+            </Item>
+            <Item arrow="horizontal" multipleLine onClick={() => {}}>
+              Title <Brief>subtitle</Brief>
+            </Item>
+          </List>
+        </div>
       );
     } else {
       return (

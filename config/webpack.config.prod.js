@@ -13,18 +13,6 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const config = require('./config');
-const miniHtmlPluginConfig = {
-  removeComments: true,
-  collapseWhitespace: true,
-  removeRedundantAttributes: true,
-  useShortDoctype: true,
-  removeEmptyAttributes: true,
-  removeStyleLinkTypeAttributes: true,
-  keepClosingSlash: true,
-  minifyJS: true,
-  minifyCSS: true,
-  minifyURLs: true,
-};
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -78,24 +66,6 @@ const initEntry = () => {
 
   return obj
 };
-
-let data = [
-  new HtmlWebpackPlugin({
-    inject: true,
-    chunks: ["index"],
-    template: paths.appHtml,
-    title: "index",
-    content: "index111"
-  }),
-  new HtmlWebpackPlugin({
-    inject: true,
-    chunks: ["main"],
-    template: paths.appHtml,
-    filename: 'main.html',
-    title: "main",
-    content: "main3333"
-  })
-];
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -344,23 +314,50 @@ module.exports = {
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
 
-    new HtmlWebpackPlugin({
-      inject: true,
-      chunks: ["index"],
-      template: paths.appHtml,
-      title: "index",
-      content: "index111",
-      minify: miniHtmlPluginConfig
-    }),
-    new HtmlWebpackPlugin({
-      inject: true,
-      chunks: ["main"],
-      template: paths.appHtml,
-      filename: 'main.html',
-      title: "main",
-      content: "main3333",
-      minify: miniHtmlPluginConfig
-    }),
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   chunks: ["index"],
+    //   template: paths.appHtml,
+    //   title: "index",
+    //   content: "index111",
+    //   minify: miniHtmlPluginConfig
+    // }),
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   chunks: ["main"],
+    //   template: paths.appHtml,
+    //   filename: 'main.html',
+    //   title: "main",
+    //   content: "main3333",
+    //   minify: miniHtmlPluginConfig
+    // }),
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   chunks: ["meetingControl"],
+    //   template: paths.appHtml,
+    //   filename: 'meetingControl.html',
+    //   title: "meetingControl",
+    //   content: "loading...",
+    //   minify: miniHtmlPluginConfig
+    // }),
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   chunks: ["meetingOtherControl"],
+    //   template: paths.appHtml,
+    //   filename: 'meetingOtherControl.html',
+    //   title: "meetingOtherControl",
+    //   content: "loading...",
+    //   minify: miniHtmlPluginConfig
+    // }),
+    // new HtmlWebpackPlugin({
+    //   inject: true,
+    //   chunks: ["meetingPassword"],
+    //   template: paths.appHtml,
+    //   filename: 'meetingPassword.html',
+    //   title: "meetingPassword",
+    //   content: "loading...",
+    //   minify: miniHtmlPluginConfig
+    // }),
 
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
@@ -436,7 +433,7 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  ],
+  ].concat(config.htmlConfig),
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
