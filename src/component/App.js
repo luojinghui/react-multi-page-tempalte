@@ -45,7 +45,11 @@ class App extends Component {
           }}
         >
           <List className="my-list">
-            <Item arrow="horizontal" multipleLine onClick={this.onJumpPage.bind(this)}>
+            <Item
+              arrow="horizontal"
+              multipleLine
+              onClick={this.onJumpPage.bind(this)}
+            >
               Title <Brief>subtitle</Brief>
             </Item>
             <Item arrow="horizontal" multipleLine onClick={() => {}}>

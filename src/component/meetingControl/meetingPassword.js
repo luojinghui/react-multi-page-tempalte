@@ -4,8 +4,19 @@
  * @Description:
  */
 import React, { Component } from "react";
-import { List, InputItem, Button, WhiteSpace, WingBlank } from "antd-mobile";
+import {
+  List,
+  InputItem,
+  Button,
+  WhiteSpace,
+  WingBlank,
+  Toast,
+  Modal
+} from "antd-mobile";
+import { getParam } from "../../tools/urlParams";
 import styles from "../../assets/scss/meetingControl.scss";
+
+const Alert = Modal.alert;
 
 class meetingPassword extends Component {
   constructor(props, context) {
@@ -15,6 +26,12 @@ class meetingPassword extends Component {
       disabled: true,
       value: ""
     };
+  }
+
+  componentDidMount() {
+    let urlParams = getParam();
+
+    Toast.info(`meeting Id: ${urlParams.mId}`);
   }
 
   onInputChange(val) {
@@ -33,6 +50,17 @@ class meetingPassword extends Component {
     });
   }
 
+  onClickSure() {
+    Alert("输入", this.state.value, [
+      {
+        text: "确定",
+        onPress: () => {
+          Alert("通知", "开始跳转到会控页面");
+        }
+      }
+    ]);
+  }
+
   render() {
     let { disabled, value } = this.state;
 
@@ -45,14 +73,19 @@ class meetingPassword extends Component {
             placeholder="请输入主持密码"
             defaultValue={value}
             value={value}
-            maxLength={13}
+            maxLength={20}
             clear={true}
             onChange={this.onInputChange.bind(this)}
           />
         </List>
         <WingBlank>
           <WhiteSpace style={{ height: "30px" }} />
-          <Button type="primary" disabled={disabled} className={styles.main}>
+          <Button
+            type="primary"
+            disabled={disabled}
+            className={styles.main}
+            onClick={this.onClickSure.bind(this)}
+          >
             提交
           </Button>
         </WingBlank>

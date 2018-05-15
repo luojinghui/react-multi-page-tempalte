@@ -36,7 +36,9 @@ class meetingOtherControl extends Component {
   }
 
   onClickSure() {
-
+    Alert("输入", this.state.value,  [
+      { text: '确定', onPress: () => window.location.href = window.location.protocol + `meetingPassword.html?mId=${this.state.value}` }
+    ]);
   }
 
   render() {
